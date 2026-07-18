@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next Starter Kit
 
-## Getting Started
+빠르게 웹 개발을 시작할 수 있도록 구성된 모던 웹 스타터킷입니다.
 
-First, run the development server:
+## 기술스택
+
+- [Next.js 16](https://nextjs.org) (App Router, Turbopack)
+- TypeScript
+- [Tailwind CSS v4](https://tailwindcss.com)
+- [shadcn/ui](https://ui.shadcn.com) (Base UI 기반, `base-nova` 스타일)
+- [lucide-react](https://lucide.dev) 아이콘
+- [next-themes](https://github.com/pacocoursey/next-themes) 다크모드
+- [react-hook-form](https://react-hook-form.com) + [zod](https://zod.dev) 폼 검증
+- [sonner](https://sonner.emilkowal.ski) 토스트 알림
+
+## 시작하기
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+[http://localhost:3000](http://localhost:3000) 에서 결과를 확인하세요. `/components` 경로에서 설치된 shadcn/ui 컴포넌트 데모를 볼 수 있습니다.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 폴더 구조
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+app/
+  layout.tsx          루트 레이아웃 (ThemeProvider, Header, Footer, Toaster)
+  page.tsx             랜딩 페이지
+  components/page.tsx  컴포넌트 쇼케이스
+components/
+  ui/                  shadcn/ui 컴포넌트
+  layout/              Header, Footer, MobileNav, Container
+  common/               PageHeader 등 페이지 공통 컴포넌트
+  theme-provider.tsx    next-themes 래퍼
+  theme-toggle.tsx      다크모드 토글 버튼
+lib/
+  utils.ts             cn() 클래스 병합 유틸
+```
 
-## Learn More
+## 자주 쓰는 명령어
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run dev     # 개발 서버 실행
+npm run build   # 프로덕션 빌드
+npm run lint    # ESLint 검사
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 컴포넌트 추가하기
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+이 프로젝트는 `components.json`에 `base-nova` 스타일(Base UI 기반)로 구성되어 있습니다. 새 shadcn/ui 컴포넌트가 필요하면 다음 명령으로 추가하세요.
 
-## Deploy on Vercel
+```bash
+npx shadcn add <컴포넌트명>
+# 예: npx shadcn add table
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 주의사항
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+이 프로젝트의 Next.js 버전은 최신 브레이킹 체인지가 반영되어 있습니다(`proxy.ts`로 미들웨어 대체, `params`/`searchParams`/`cookies()`/`headers()` 전면 async화, Turbopack 기본 사용 등). 코드 작성 전 `node_modules/next/dist/docs/`의 관련 가이드를 참고하세요. 자세한 내용은 `AGENTS.md`를 확인하세요.
