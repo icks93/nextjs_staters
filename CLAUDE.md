@@ -6,7 +6,7 @@
 
 ## ⚠️ 일반적인 Next.js가 아닙니다 — 코드 작성 전 문서부터 확인
 
-이 저장소는 **Next.js 16.2.10**(App Router, 기본 컴파일러는 Turbopack)으로 고정되어 있으며, 학습 데이터 기준의 Next.js와 다른 브레이킹 체인지가 있습니다. 라우팅, 데이터 페칭, 미들웨어, 이미지, 캐싱을 건드리기 전에 `node_modules/next/dist/docs/01-app/` 아래 관련 문서를 먼저 읽으세요. 여기서 특히 중요한 차이점:
+이 저장소는 **Next.js 16.2.10**(App Router, 기본 컴파일러는 Turbopack)으로 고정되어 있으며, 학습 데이터 기준의 Next.js와 다른 브레이킹 체인지가 있습니다. 라우팅, 데이터 페칭, 미들웨어, 이미지, 캐싱을 건드리기 전에 `node_modules/next/dist/docs/01-app/` 아래 관련 문서를 먼저 읽으세요. `EXAMPLES/01-nextjs16-api/`에 이 브레이킹 체인지들(`proxy.ts`, 비동기 `params`/`searchParams`, `unstable_retry()`를 쓰는 `error.tsx`, `global-error.tsx`)의 실제 동작 예제가 있으니 참고하세요. `/next:docs-check` 슬래시 명령을 쓰면 이 문서 확인 과정을 대신 진행해줍니다. 여기서 특히 중요한 차이점:
 
 - `middleware.ts`는 사라졌습니다 — 대신 `proxy.ts`를 사용합니다(`middleware` export가 `proxy`로 이름이 바뀌었고, Edge가 아닌 Node.js 런타임만 지원).
 - `params`, `searchParams`, `cookies()`, `headers()`, `draftMode()`는 **완전히 비동기 전용**입니다. 예전처럼 동기로 접근할 수 있는 호환 시프트는 더 이상 없습니다.
@@ -41,7 +41,7 @@ npm run lint    # ESLint 검사 (eslint.config.mjs, flat config)
 - `Button`, `SheetClose`, dialog trigger/close 등 인터랙티브 프리미티브는 기본값이 `nativeButton={true}`라서 `render`로 지정한 엘리먼트가 네이티브 `<button>`이라고 가정합니다. `render`가 `next/link`의 `<Link>`처럼 다른 엘리먼트를 가리킨다면 `nativeButton={false}`를 명시하지 않으면 Base UI가 네이티브 버튼 시맨틱스가 없다는 콘솔 오류를 남깁니다. 패턴은 `app/page.tsx`와 `components/layout/mobile-nav.tsx`를 참고하세요.
 - Radix 기반 shadcn 예제/문서를 그대로 복사하지 마세요 — prop 구성이 다릅니다.
 
-**새 shadcn/ui 컴포넌트 추가**: 직접 코드를 작성하지 말고 CLI를 사용하세요 — `npx shadcn add <이름>`. 스타일은 `base-nova`(Base UI 백엔드)이며 `components.json`에 설정되어 있습니다(alias: `@/components`, `@/components/ui`, `@/lib`, `@/hooks`; base color `neutral`; CSS 변수는 `app/globals.css`).
+**새 shadcn/ui 컴포넌트 추가**: 직접 코드를 작성하지 말고 CLI를 사용하세요 — `npx shadcn add <이름>`. 이 저장소에는 `/ui:add` 슬래시 명령이 있어 같은 CLI를 호출하면서 생성된 코드에 Radix 잔재(`asChild` 등)가 남아있는지도 함께 검증해줍니다. 스타일은 `base-nova`(Base UI 백엔드)이며 `components.json`에 설정되어 있습니다(alias: `@/components`, `@/components/ui`, `@/lib`, `@/hooks`; base color `neutral`; CSS 변수는 `app/globals.css`). `render`/`nativeButton` 패턴 예제는 `EXAMPLES/02-base-ui-components/`에서도 확인할 수 있습니다.
 
 **폴더 구조**:
 ```
@@ -61,7 +61,11 @@ lib/
 
 내비게이션 링크는 한 곳(`components/layout/nav-items.ts`)에만 존재하며 `Header`와 `MobileNav`가 이를 함께 사용합니다 — 새 라우트를 추가할 때는 여러 컴포넌트에 링크를 하드코딩하지 말고 이 파일에 추가하세요.
 
+저장소 루트에는 위 트리 외에 다음 두 디렉터리도 있습니다:
+- `EXAMPLES/`: 실제 라우트가 아닌 참고용 코드 모음(`01-nextjs16-api`, `02-base-ui-components`, `03-forms-zod`). 각 파일 상단 주석에 실사용 시 복사할 목적지 경로가 안내되어 있습니다.
+- `.claude/agents/`, `.claude/commands/`: 이 저장소 전용 서브에이전트(code-reviewer, test-runner)와 슬래시 명령(`git:commit`, `next:docs-check`, `ui:add`)이 구성되어 있습니다.
+
 ## 참고 사항
 
-- `.mcp.json`에 이 프로젝트용 Playwright MCP 서버(`@playwright/mcp`)가 등록되어 있어, 실행 중인 앱을 브라우저 자동화 도구로 조작/점검할 수 있습니다.
+- `.mcp.json`에 Playwright MCP 서버(`@playwright/mcp`, 실행 중인 앱을 브라우저 자동화로 조작/점검), `context7`(라이브러리 최신 문서 조회), `sequential-thinking`(복잡한 문제를 단계적으로 분석) 서버가 등록되어 있습니다.
 - 이 코드베이스는 전반적으로 한국어를 작업 언어로 사용합니다: UI 문구, `README.md`, 커밋 메시지는 한국어로 작성하고 식별자(변수명/함수명)는 영어를 유지합니다.
